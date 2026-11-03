@@ -1,0 +1,27 @@
+{
+  "name": "mongoose-checkpoint",
+  "version": "1.0.0",
+  "description": "Mongoose checkpoint: schema modelling, CRUD operations and query chaining with MongoDB Atlas",
+  "main": "myApp.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node local.test.js",
+    "test:memory": "node e2e.test.js",
+    "check": "node --check myApp.js && node --check server.js"
+  },
+  "keywords": [
+    "mongoose",
+    "mongodb",
+    "checkpoint"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mongodb": "^4.17.2",
+    "mongoose": "^6.12.0"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^11.3.0"
+  }
+}

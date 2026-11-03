@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Private environment variables (contains the MongoDB URI)
+.env
+
+# Logs
+npm-debug.log*
+*.log
+
+# OS files
+.DS_Store
