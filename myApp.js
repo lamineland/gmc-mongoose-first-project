@@ -11,11 +11,6 @@ const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 
 // ---------------------------------------------------------------------------
-// 1) Connect to the MongoDB Atlas database
-//    The URI is stored in the private .env file as MONGO_URI,
-//    surrounded by quotes and with no spaces around the `=`.
-//    The promise chain below only logs the result / errors so that a wrong
-//    URI does not crash the process with an unhandled rejection.
 // ---------------------------------------------------------------------------
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -26,11 +21,6 @@ mongoose
   .catch((err) => console.error('MongoDB connection error:', err.message));
 
 // ---------------------------------------------------------------------------
-// 2) Person prototype / schema
-//    name           : String  [required]
-//    age            : Number  (with a default value)
-//    favoriteFoods  : Array of Strings ([String] so push() is tracked properly)
-//    Simple validators (required / default) are used as suggested in the docs.
 // ---------------------------------------------------------------------------
 const personSchema = new mongoose.Schema({
   name: {
@@ -51,9 +41,6 @@ const personSchema = new mongoose.Schema({
 const Person = mongoose.model('Person', personSchema);
 
 // ---------------------------------------------------------------------------
-// 3) Create and Save a Record of a Model
-//    Build a document instance with the Person constructor, then call
-//    document.save() with a classic Node-style callback.
 // ---------------------------------------------------------------------------
 const createAndSavePerson = (done) => {
   // Build a document that conforms to the Person schema
@@ -71,8 +58,6 @@ const createAndSavePerson = (done) => {
 };
 
 // ---------------------------------------------------------------------------
-// 4) Create Many Records with model.create()
-//    model.create() takes an array of objects and saves them all in the DB.
 // ---------------------------------------------------------------------------
 const createManyPeople = (arrayOfPeople, done) => {
   Person.create(arrayOfPeople, function (err, data) {
@@ -82,8 +67,6 @@ const createManyPeople = (arrayOfPeople, done) => {
 };
 
 // ---------------------------------------------------------------------------
-// 5) Use model.find() to Search Your Database
-//    Find all the people having a given name, using Model.find() -> [Person]
 // ---------------------------------------------------------------------------
 const findPeopleByName = (personName, done) => {
   Person.find({ name: personName }, function (err, data) {
@@ -93,9 +76,6 @@ const findPeopleByName = (personName, done) => {
 };
 
 // ---------------------------------------------------------------------------
-// 6) Use model.findOne() to Return a Single Matching Document
-//    Find just one person who has a certain food in their favorites.
-//    The function argument `food` is used as the search key.
 // ---------------------------------------------------------------------------
 const findOneByFood = (food, done) => {
   // Matches any person whose favoriteFoods array contains `food`
@@ -106,9 +86,6 @@ const findOneByFood = (food, done) => {
 };
 
 // ---------------------------------------------------------------------------
-// 7) Use model.findById() to Search Your Database By _id
-//    Find the (only) person having a given _id.
-//    The function argument `personId` is used as the search key.
 // ---------------------------------------------------------------------------
 const findPersonById = (personId, done) => {
   Person.findById(personId, function (err, data) {
@@ -118,13 +95,6 @@ const findPersonById = (personId, done) => {
 };
 
 // ---------------------------------------------------------------------------
-// 8) Perform Classic Updates by Running Find, Edit, then Save
-//    Find a person by _id, push "hamburger" into favoriteFoods, then save()
-//    the updated document inside the find callback.
-//
-//    Note: favoriteFoods is declared as [String] so Mongoose tracks the push
-//    automatically. If it had been declared as a plain Array (Mixed type),
-//    we would need document.markModified('favoriteFoods') before saving.
 // ---------------------------------------------------------------------------
 const findEditThenSave = (personId, done) => {
   // Step 1: find the person by _id
@@ -146,9 +116,6 @@ const findEditThenSave = (personId, done) => {
 };
 
 // ---------------------------------------------------------------------------
-// 9) Perform New Updates on a Document Using model.findOneAndUpdate()
-//    Find a person by name and set their age to 20.
-//    { new: true } makes the method return the UPDATED document.
 // ---------------------------------------------------------------------------
 const findAndUpdate = (personName, done) => {
   Person.findOneAndUpdate(
@@ -163,8 +130,6 @@ const findAndUpdate = (personName, done) => {
 };
 
 // ---------------------------------------------------------------------------
-// 10) Delete One Document Using model.findByIdAndRemove()
-//     Delete one person by their _id (function argument `personId`).
 // ---------------------------------------------------------------------------
 const removeById = (personId, done) => {
   Person.findByIdAndRemove(personId, function (err, data) {
@@ -174,11 +139,6 @@ const removeById = (personId, done) => {
 };
 
 // ---------------------------------------------------------------------------
-// 11) Delete Many Documents with model.remove()
-//     Delete all the people whose name is "Mary".
-//     Note: model.remove() returns a JSON object with the outcome of the
-//     operation and the number of items affected (not the deleted documents).
-//     The result is passed to the done() callback (used by the tests).
 // ---------------------------------------------------------------------------
 const removeManyPeople = (done) => {
   Person.remove({ name: 'Mary' }, function (err, data) {
@@ -188,9 +148,6 @@ const removeManyPeople = (done) => {
 };
 
 // ---------------------------------------------------------------------------
-// 12) Chain Search Query Helpers to Narrow Search Results
-//     Find people who like burritos, sort by name, limit to two documents,
-//     hide their age, and pass the done(err, data) callback to exec().
 // ---------------------------------------------------------------------------
 const queryChain = (done) => {
   Person.find({ favoriteFoods: 'burritos' }) // people who like burritos
